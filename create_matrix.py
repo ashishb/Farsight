@@ -27,14 +27,19 @@ def encode_tokens(lexicon, tid_set, token_string):
 
 lexicon = Lexicon()
 
+limit = 10000
+#limit = 330071
+
 (_, tmp_file_name) = tempfile.mkstemp()
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/yelp_parsed_reviews.json') as reviews_file:
     tid_set = set()
     total_examples = 0
     for (idx, line) in enumerate(reviews_file):
-      if idx >= 1000:
+      if idx >= limit:
         break
+      if idx % (limit / 100) == 0:
+        print '%d / %d (%.2f%%)' % (idx, limit, idx * 100.0 / limit)
       total_examples += 1
       obj = json.loads(line)
       output = []
