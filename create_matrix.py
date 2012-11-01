@@ -27,7 +27,7 @@ def encode_tokens(lexicon, tid_set, token_string):
 
 lexicon = Lexicon()
 
-limit = 10000
+limit = 100
 #limit = 330071
 
 (_, tmp_file_name) = tempfile.mkstemp()

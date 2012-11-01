@@ -8,11 +8,13 @@ category = sign(category - 2.5);
 numDocs = size(sparseMatrix, 1);
 
 % Train
-model = train(category', sparseMatrix);
+%model = train(category', sparseMatrix);
+m2 = svmtrain(sparseMatrix, category, 'kernel_function', 'rbf');
 
 % Test
-[predict_label, accuracy, decision_values] = ...
-  predict(category', sparseMatrix, model);
+%[predict_label, accuracy, decision_values] = ...
+%  predict(category', sparseMatrix, model);
+predict_label = svmclassify(m2, sparseMatrix);
 output = predict_label == 1;
 
 % Compute the error on the test set
