@@ -9,7 +9,7 @@ _YELP_PARSED_REVIEWS = './data/yelp_parsed_reviews.json'
 # Token frequencies in reviews.
 _YELP_LEXICON_FILE = './data/yelp_lexicon.txt'
 # Stop words file.
-_STOP_WORDS_FILE = './data/stopwords.txt'
+_STOP_WORDS_FILE = './lib/stopwords.txt'
 # Regex to split tokens.
 _REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
 
@@ -27,7 +27,7 @@ def _GetReviewTextAndRating(yelp_data_object):
 
 def _ParseYelpDataAndReturnReviews(filepath):
   review_text_and_ratings = list()
-  for line in open(filepath).read().split('\n'):
+  for line in open(filepath):
     if not line:  # Ignore empty lines.
       continue
     yelp_data_object = json.loads(line)
