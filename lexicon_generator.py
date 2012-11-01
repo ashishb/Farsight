@@ -1,5 +1,6 @@
 import json
 import re
+from stemming.porter2 import stem
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -7,8 +8,10 @@ _YELP_DATASET = './data/yelp_academic_dataset.json'
 _YELP_PARSED_REVIEWS = './data/yelp_parsed_reviews.json'
 # Token frequencies in reviews.
 _YELP_LEXICON_FILE = './data/yelp_lexicon.txt'
+# Stop words file.
+_STOP_WORDS_FILE = './data/stopwords.txt'
 # Regex to split tokens.
-_REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&]'
+_REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
 
 
 def _IsReview(yelp_data_object):
@@ -42,15 +45,24 @@ def _StoreParsedReviews(review_text_and_ratings, filepath):
           {'rating': review[0] , 'text': review[1]}) + '\n')
   fp.close()
 
+def _ReadStopWords(stopwords_filepath):
+  """Reads and returns a set containing stop words."""
+  return set(open(stopwords_filepath).read().split('\n'))
 
-def _ProduceLexicon(review_text_and_ratings):
+def _ProduceLexicon(review_text_and_ratings, stopwords_filepath):
   """Returns a dictionary object containing tokens and their freqeuncies."""
   token_frequencies = {}
+  stopwords = _ReadStopWords(stopwords_filepath)
   for (rating, review) in review_text_and_ratings:
     tokens = re.split(_REGEX_TOKEN_SPLIT_PATTERN, review)
     for token in tokens:
+      # TODO(ashishb): If token has more than two dashes separated by few(3?) chars then split it.
       token = token.strip()
-      if token:  # Ignore empty tokens.
+      try:
+        token = stem(token)
+      except IndexError as e:
+        print 'IndexError while trying to stem \"%s\"' % token
+      if token and token not in stopwords:  # Ignore empty tokens.
         token_frequencies[token] = 1 + token_frequencies.get(token, 0)
   return token_frequencies
 
@@ -71,7 +83,7 @@ assert review_text_and_ratings
 print 'Finished reading reviews.\nNow writing parsed reviews to', _YELP_PARSED_REVIEWS
 _StoreParsedReviews(review_text_and_ratings, _YELP_PARSED_REVIEWS)
 print 'Finished writing parsed reviews.\nNow generating lexicon.'
-token_frequencies = _ProduceLexicon(review_text_and_ratings)
+token_frequencies = _ProduceLexicon(review_text_and_ratings, _STOP_WORDS_FILE)
 print 'writing lexicon to', _YELP_LEXICON_FILE
 _StoreTokenFrequencies(token_frequencies, _YELP_LEXICON_FILE)
 print 'Everything done.'
