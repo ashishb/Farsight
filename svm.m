@@ -5,25 +5,45 @@ clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
 category = sign(category - 2.5);
-numDocs = size(sparseMatrix, 1);
 
-% Train
-%model = train(category', sparseMatrix);
-m2 = svmtrain(sparseMatrix, category, 'kernel_function', 'rbf');
-
-% Test
-%[predict_label, accuracy, decision_values] = ...
-%  predict(category', sparseMatrix, model);
-predict_label = svmclassify(m2, sparseMatrix);
-output = predict_label == 1;
-
-% Compute the error on the test set
-error = 0;
-for i = 1:numDocs
-  if (category(i) ~= output(i))
-    error=error+1;
+trainError = []
+testError = []
+for m = 1:1000
+  % Train
+  trainMatrix = sparseMatrix(1:m,:);
+  trainCategory = category(1:m)';
+  model = train(trainCategory, trainMatrix);
+  
+  % Test training data
+  [predict_label, accuracy, decision_values] = ...
+    predict(trainCategory, trainMatrix, model);
+  output = predict_label == 1;
+  
+  error = 0;
+  for i = 1:m
+    if (trainCategory(i) ~= output(i))
+      error = error + 1;
+    end
   end
+  trainError(m) = error / m;
+  
+  % Test set
+  testMatrix = sparseMatrix(m+1:m+m,:);
+  testCategory = category(m+1:m+m)';
+  [predict_label, accuracy, decision_values] = ...
+    predict(testCategory, testMatrix, model);
+  output = predict_label == 1;
+  
+  error = 0;
+  for i = 1:m
+    if (testCategory(i) ~= output(i))
+      error = error + 1;
+    end
+  end
+  testError(m) = error / m;
 end
 
-%Print out the classification error on the test set
-error / numDocs
+figure();
+hold;
+plot(trainError);
+plot(testError);
