@@ -9,9 +9,11 @@ category = sign(category - 2.5);
 trainError = [];
 testError = [];
 size = 500;
-for m = 2:size
+for m = size:size
   m
   % Train
+  trainMatrix = sparseMatrix(1:m,:);
+  trainCategory = category(1:m)';
   model = svmtrain(trainMatrix, trainCategory, 'kernel_function', 'rbf');
   
   % Test training data
