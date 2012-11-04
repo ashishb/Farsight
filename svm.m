@@ -8,7 +8,8 @@ category = sign(category - 2.5);
 
 trainError = []
 testError = []
-for m = 1:1000
+size = 2000
+for m = 1:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -28,8 +29,8 @@ for m = 1:1000
   trainError(m) = error / m;
   
   % Test set
-  testMatrix = sparseMatrix(m+1:m+m,:);
-  testCategory = category(m+1:m+m)';
+  testMatrix = sparseMatrix(size+1:size+m,:);
+  testCategory = category(size+1:size+m)';
   [predict_label, accuracy, decision_values] = ...
     predict(testCategory, testMatrix, model);
   output = predict_label == 1;
@@ -44,6 +45,7 @@ for m = 1:1000
 end
 
 figure();
-hold;
+hold all;
 plot(trainError);
 plot(testError);
+legend('train', 'test')

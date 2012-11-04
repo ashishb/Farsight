@@ -1,6 +1,9 @@
 import json
 import re
+import time
+from Queue import Queue
 from stemming.porter2 import stem
+from threading import Thread
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -47,17 +50,29 @@ def _StoreParsedReviews(review_text_and_ratings, filepath):
 
 def _ReadStopWords(stopwords_filepath):
   """Reads and returns a set containing stop words."""
-  return set(open(stopwords_filepath).read().split('\n'))
+  return set(x.lower() for x in open(stopwords_filepath).read().split('\n'))
 
-def _ProduceLexicon(review_text_and_ratings, stopwords_filepath):
+    
+
+def _ProduceLexicon(review_text_and_ratings, stopwords):
   """Returns a dictionary object containing tokens and their freqeuncies."""
   token_frequencies = {}
-  stopwords = _ReadStopWords(stopwords_filepath)
+  progress_max = len(review_text_and_ratings)
+  progress = 0;
+  t = time.time()
   for (rating, review) in review_text_and_ratings:
+    progress = progress + 1
+    if progress % (progress_max / 100) == 0:
+      progress_pct = progress * 100.0 / progress_max
+      print '%d / %d (%.2f%%) ETA: %d seconds' % \
+        (progress, progress_max, progress_pct,
+        (time.time() - t) / (progress_max / 100) * (progress_max - progress))
+      t = time.time()
+
     tokens = re.split(_REGEX_TOKEN_SPLIT_PATTERN, review)
     for token in tokens:
       # TODO(ashishb): If token has more than two dashes separated by few(3?) chars then split it.
-      token = token.strip()
+      token = token.strip().lower()
       try:
         token = stem(token)
       except IndexError as e:
@@ -66,6 +81,43 @@ def _ProduceLexicon(review_text_and_ratings, stopwords_filepath):
         token_frequencies[token] = 1 + token_frequencies.get(token, 0)
   return token_frequencies
 
+#class Worker(Thread):
+#  def __init__(self, workQ, resultQ, stopwords, review_text_and_ratings, n):
+#    Thread.__init__(self)
+#    self.workQ = workQ
+#    self.resultQ = resultQ
+#    self.stopwords = stopwords
+#    self.review_text_and_ratings = review_text_and_ratings
+#    self.n = n
+#
+#  def run(self):
+#    while True:
+#      (s, t) = self.workQ.get(True)
+#      token_frequenies = \
+#          _ProduceLexicon(self.review_text_and_ratings[s:t], self.stopwords)
+#      self.resultQ.put(token_frequenies)
+#      self.workQ.task_done()
+#      print time.time(), (100 - self.workQ.qsize() * 100.0 / self.n)
+#
+#def _ThreadedProduceLexicon(review_text_and_ratings, stopwords):
+#  workQ = Queue()
+#  resultQ = Queue()
+#  numThreads = 8
+#  numShards = 100
+#  for i in xrange(numThreads):
+#    w = Worker(workQ, resultQ, stopwords, review_text_and_ratings, numShards)
+#    w.daemon = True
+#    w.start()
+#
+#  numDocs = len(review_text_and_ratings)
+#  docsPerShard = numDocs / numShards
+#  for i in xrange(numShards):
+#    work = (i * docsPerShard, i * docsPerShard + docsPerShard - 1)
+#    workQ.put(work)
+#
+#  t = time.time()
+#  workQ.join()
+#  print time.time - t
 
 def _StoreTokenFrequencies(token_frequencies, filepath):
   token_frequencies_list = token_frequencies.items()
@@ -83,7 +135,9 @@ assert review_text_and_ratings
 print 'Finished reading reviews.\nNow writing parsed reviews to', _YELP_PARSED_REVIEWS
 _StoreParsedReviews(review_text_and_ratings, _YELP_PARSED_REVIEWS)
 print 'Finished writing parsed reviews.\nNow generating lexicon.'
-token_frequencies = _ProduceLexicon(review_text_and_ratings, _STOP_WORDS_FILE)
+stopwords = _ReadStopWords(_STOP_WORDS_FILE)
+#token_frequencies = _ThreadedProduceLexicon(review_text_and_ratings, stopwords)
+token_frequencies = _ProduceLexicon(review_text_and_ratings, stopwords)
 print 'writing lexicon to', _YELP_LEXICON_FILE
 _StoreTokenFrequencies(token_frequencies, _YELP_LEXICON_FILE)
 print 'Everything done.'
