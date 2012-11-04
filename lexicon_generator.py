@@ -39,13 +39,20 @@ def _ParseYelpDataAndReturnReviews(filepath):
   return review_text_and_ratings
 
 
-def _StoreParsedReviews(review_text_and_ratings, filepath):
-  """Dumps in the json form {'text': <text>, 'rating': <stars>}."""
+def _StoreParsedAndStemmedReviews(review_text_and_ratings, filepath):
+  """Dumps in the json form {'text': <stemmed_text>, 'rating': <stars>}."""
   fp = open(filepath, 'w')
   for review in review_text_and_ratings:
+    unstemmed_review = review[1]
+    stemmed_review = ''
+    for token in unstemmed_review.split(' '):
+      try:
+        stemmed_review += stem(token) + ' '
+      except IndexError as e:
+        print 'IndexError while trying to stem \"%s\"' % token
     # Convert to ascii, ignore non-ascii characters.
     fp.write(json.dumps(
-          {'rating': review[0] , 'text': review[1]}) + '\n')
+          {'rating': review[0] , 'text': stemmed_review}) + '\n')
   fp.close()
 
 def _ReadStopWords(stopwords_filepath):
@@ -133,7 +140,7 @@ print 'Reading reviews from', _YELP_DATASET
 review_text_and_ratings = _ParseYelpDataAndReturnReviews(_YELP_DATASET)
 assert review_text_and_ratings
 print 'Finished reading reviews.\nNow writing parsed reviews to', _YELP_PARSED_REVIEWS
-_StoreParsedReviews(review_text_and_ratings, _YELP_PARSED_REVIEWS)
+_StoreParsedAndStemmedReviews(review_text_and_ratings, _YELP_PARSED_REVIEWS)
 print 'Finished writing parsed reviews.\nNow generating lexicon.'
 stopwords = _ReadStopWords(_STOP_WORDS_FILE)
 #token_frequencies = _ThreadedProduceLexicon(review_text_and_ratings, stopwords)
