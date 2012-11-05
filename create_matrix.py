@@ -1,7 +1,8 @@
-from lexicon import Lexicon
-
 import json
 import tempfile
+
+from progress import Progress
+from lexicon import Lexicon
 
 def encode_tokens(lexicon, tid_set, token_string):
   tid_list = [lexicon.tid(token) for token in token_string.split(' ')]
@@ -27,19 +28,19 @@ def encode_tokens(lexicon, tid_set, token_string):
 
 lexicon = Lexicon()
 
-limit = 5000
+limit = 10000
 #limit = 330071
 
 (_, tmp_file_name) = tempfile.mkstemp()
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/yelp_parsed_reviews.json') as reviews_file:
+    progress = Progress('Write matrix', limit)
     tid_set = set()
     total_examples = 0
     for (idx, line) in enumerate(reviews_file):
+      progress.Update()
       if idx >= limit:
         break
-      if idx % (limit / 100) == 0:
-        print '%d / %d (%.2f%%)' % (idx, limit, idx * 100.0 / limit)
       total_examples += 1
       obj = json.loads(line)
       output = []

@@ -5,8 +5,6 @@ class Lexicon:
     index = 0
     with open('data/yelp_lexicon.txt') as file:
       for line in file:
-        #if len(self.token_to_tid) > 1000:
-        #  break
         token_freq = line.strip().split(' ')
         if len(token_freq) == 2:
           token = token_freq[0]

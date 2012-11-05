@@ -8,7 +8,7 @@ category = sign(category - 2.5);
 
 trainError = [];
 testError = [];
-size = 500;
+size = 2000;
 for m = size:size
   m
   % Train
