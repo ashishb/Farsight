@@ -7,10 +7,10 @@ from random import Random
 from stemming.porter2 import stem
 
 _SAMPLING_RATE = 0.1
-_DO_SPELLING = False
+_DO_SPELLING = True
 _DO_STEMMING = True
 _USE_STOPWORDS = True
-_CREATE_BIGRAMS = False
+_CREATE_BIGRAMS = True
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -78,7 +78,12 @@ for review in reviews:
   for token in re.split(_REGEX_TOKEN_SPLIT_PATTERN, review_text):
     original_token = token = token.strip().lower()
     cached_token = token_cache.get(token, None)
-    if not cached_token:
+    if cached_token:
+      if cached_token == '_IGNORE_':
+        continue
+      else:
+        stemmed_review_text.append(cached_token)
+    else:
       if _DO_SPELLING:
         if not spell.check(token):
           suggests = spell.suggest(token)
@@ -95,22 +100,18 @@ for review in reviews:
           pass
 
       # Ignore empty tokens.
-      if token:
+      if len(token) > 1:
         if not _USE_STOPWORDS or token not in stopwords:
           stemmed_review_text.append(token)
           token_cache[original_token] = token
       else:
         token_cache[original_token] = '_IGNORE_'
-    elif cached_token == '_IGNORE_':
-      continue
-    else:
-      stemmed_review_text.append(cached_token)
 
   # Create bi-grams
   if _CREATE_BIGRAMS:
     bigrams = []
     for i in xrange(len(stemmed_review_text) - 1):
-      bigrams.append(stemmed_review_text[i] + ' ' + stemmed_review_text[i + 1])
+      bigrams.append(stemmed_review_text[i] + '-' + stemmed_review_text[i + 1])
     stemmed_review_text.extend(bigrams)
 
   review['stemmed_text'] = stemmed_review_text

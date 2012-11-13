@@ -2,11 +2,11 @@ close('all')
 clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-%category = (sign(category - 2.5) + 1) / 2;
+category = (sign(category - 2.5) + 1) / 2;
 
 trainError = [];
 testError = [];
-size = 3000;
+size = 1000;
 for m = size:size
   m
   % Train
