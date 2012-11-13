@@ -3,7 +3,7 @@ class Lexicon:
     self.token_to_tid = {}
     self.tid_to_token = {}
     index = 0
-    with open('data/yelp_lexicon.txt') as file:
+    with open('data/lexicon.txt') as file:
       for line in file:
         token_freq = line.strip().split(' ')
         if len(token_freq) == 2:

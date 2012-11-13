@@ -33,7 +33,7 @@ limit = 10000
 
 (_, tmp_file_name) = tempfile.mkstemp()
 with open(tmp_file_name, 'w') as tmp_file:
-  with open('data/yelp_parsed_reviews.json') as reviews_file:
+  with open('data/parsed_reviews.json') as reviews_file:
     progress = Progress('Write matrix', limit)
     tid_set = set()
     total_examples = 0

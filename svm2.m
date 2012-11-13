@@ -1,5 +1,3 @@
-addpath('~/liblinear-1.92/matlab');  % add LIBLINEAR to the path
-
 close('all')
 clear
 
@@ -8,9 +6,8 @@ category = sign(category - 2.5);
 
 trainError = [];
 testError = [];
-size = 2000;
+size = 1000;
 for m = size:size
-  m
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -41,11 +38,11 @@ for m = size:size
   testError(m) = error / m;
 end
 
-trainError(size)
-testError(size)
+trainError(length(trainError))
+testError(length(testError))
 
-figure();
-hold all;
-plot(trainError);
-plot(testError);
-legend('train', 'test')
+%figure();
+%hold all;
+%plot(trainError);
+%plot(testError);
+%legend('train', 'test')

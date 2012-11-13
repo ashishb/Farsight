@@ -3,7 +3,7 @@ clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
 
-m = 400;
+m = 5000;
 
   % Train
   trainCategory = (sign(category(:,1:m) - 2.5) + 1) / 2;

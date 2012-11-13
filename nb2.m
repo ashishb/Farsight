@@ -1,10 +1,8 @@
-addpath('~/liblinear-1.92/matlab');  % add LIBLINEAR to the path
-
 close('all')
 clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = sign(category - 2.5);
+category = (sign(category - 2.5) + 1) / 2;
 
 trainError = [];
 testError = [];
@@ -13,12 +11,10 @@ for m = size:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
-  model = train(trainCategory, trainMatrix);
+  model = NaiveBayes.fit(trainMatrix, trainCategory, 'Distribution', 'mn');
   
   % Test training data
-  [predict_label, accuracy, decision_values] = ...
-    predict(trainCategory, trainMatrix, model);
-  output = predict_label == 1;
+  output = predict(model, trainMatrix);
   
   error = 0;
   for i = 1:m
@@ -31,9 +27,7 @@ for m = size:size
   % Test set
   testMatrix = sparseMatrix(size+1:size+m,:);
   testCategory = category(size+1:size+m)';
-  [predict_label, accuracy, decision_values] = ...
-    predict(testCategory, testMatrix, model);
-  output = predict_label == 1;
+  output = predict(model, testMatrix);
   
   error = 0;
   for i = 1:m

@@ -9,13 +9,14 @@ from stemming.porter2 import stem
 _SAMPLING_RATE = 1
 _DO_SPELLING = True
 _DO_STEMMING = True
+_USE_STOPWORDS = True
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
 # Parsed reviews
-_YELP_PARSED_REVIEWS = './data/yelp_parsed_reviews.json'
+_YELP_PARSED_REVIEWS = './data/parsed_reviews.json'
 # Token frequencies in reviews.
-_YELP_LEXICON_FILE = './data/yelp_lexicon.txt'
+_YELP_LEXICON_FILE = './data/lexicon.txt'
 # Stop words file.
 _STOP_WORDS_FILE = './lib/stopwords.txt'
 # Regex to split tokens.
@@ -59,7 +60,7 @@ for review in original_reviews:
   business = businesses.get(review.get('business_id'), None)
   if not business:
     continue
-  if 'Restaurants' not in business.get('categories'):
+  if 'Hotels' not in business.get('categories'):
     continue
   reviews.append(review)
 print '#reviews after filter: ', len(reviews)
@@ -92,9 +93,10 @@ for review in reviews:
           pass
 
       # Ignore empty tokens.
-      if token and token not in stopwords:
-        stemmed_review_text.append(token)
-        token_cache[original_token] = token
+      if token:
+        if not _USE_STOPWORDS or token not in stopwords:
+          stemmed_review_text.append(token)
+          token_cache[original_token] = token
       else:
         token_cache[original_token] = '_IGNORE_'
     elif cached_token == '_IGNORE_':
