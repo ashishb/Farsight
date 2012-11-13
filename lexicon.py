@@ -9,8 +9,8 @@ class Lexicon:
         token_freq = line.strip().split(' ')
         if len(token_freq) == 2:
           token = token_freq[0]
-          if int(token_freq[1]) <= 10:
-            continue
+          #if int(token_freq[1]) <= 10:
+          #  continue
           self.token_freq[token] = int(token_freq[1])
           self.token_to_tid[token] = index
           self.tid_to_token[index] = token

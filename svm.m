@@ -9,7 +9,7 @@ category = sign(category - 2.5);
 trainError = [];
 testError = [];
 size = 4000;
-for m = size:size
+for m = 1:50:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -45,8 +45,8 @@ end
 trainError(length(trainError))
 testError(length(testError))
 
-%figure();
-%hold all;
-%plot(trainError);
-%plot(testError);
-%legend('train', 'test')
+figure();
+hold all;
+plot(trainError);
+plot(testError);
+legend('train', 'test')
