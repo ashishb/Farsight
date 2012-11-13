@@ -4,21 +4,20 @@ close('all')
 clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = sign(category - 4.5);
+category = sign(category - 2.5);
 
 trainError = [];
 testError = [];
-size = 2000;
+size = 4000;
 for m = size:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
-  model = train(trainCategory, trainMatrix);
+  model = train(trainCategory, trainMatrix, '-s 0');
   
   % Test training data
-  [predict_label, accuracy, decision_values] = ...
+  [output, accuracy, decision_values] = ...
     predict(trainCategory, trainMatrix, model);
-  output = predict_label == 1;
   
   error = 0;
   for i = 1:m
@@ -31,9 +30,8 @@ for m = size:size
   % Test set
   testMatrix = sparseMatrix(size+1:size+m,:);
   testCategory = category(size+1:size+m)';
-  [predict_label, accuracy, decision_values] = ...
+  [output, accuracy, decision_values] = ...
     predict(testCategory, testMatrix, model);
-  output = predict_label == 1;
   
   error = 0;
   for i = 1:m

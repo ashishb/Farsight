@@ -1,8 +1,9 @@
 import json
 import tempfile
 
-from progress import Progress
 from lexicon import Lexicon
+from progress import Progress
+from random import Random
 
 def encode_tokens(lexicon, tid_set, token_string):
   tid_list = [lexicon.tid(token) for token in token_string.split(' ')]
@@ -31,6 +32,7 @@ lexicon = Lexicon()
 limit = 30000
 #limit = 330071
 
+rand = Random()
 (_, tmp_file_name) = tempfile.mkstemp()
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/parsed_reviews.json') as reviews_file:
@@ -41,7 +43,13 @@ with open(tmp_file_name, 'w') as tmp_file:
       if idx >= limit:
         break
       obj = json.loads(line)
+      if obj['rating'] == 3:
+        if rand.random() < 0.5:
+          obj['rating'] = 4
+        else:
+          obj['rating'] = 2
       buckets[obj['rating'] - 1].append(obj)
+    del buckets[2]
     reviews = zip(*buckets)
 
     total_examples = 0
