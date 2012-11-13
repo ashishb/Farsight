@@ -24,7 +24,7 @@ _REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
 
 spell = Aspell(("lang", "en"))
 
-stopwords = set(x.lower() for x in open(_STOP_WORDS_FILE).read().split('\n'))
+stopwords = set(stem(x.lower()) for x in open(_STOP_WORDS_FILE).read().split('\n'))
 print '#stopwords', len(stopwords)
 
 businesses = {}
