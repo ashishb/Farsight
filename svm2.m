@@ -6,7 +6,7 @@ category = sign(category - 2.5);
 
 trainError = [];
 testError = [];
-size = 1000;
+size = 500;
 for m = size:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);

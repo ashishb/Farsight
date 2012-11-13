@@ -6,7 +6,7 @@ from progress import Progress
 from random import Random
 from stemming.porter2 import stem
 
-_SAMPLING_RATE = 1
+_SAMPLING_RATE = 0.1
 _DO_SPELLING = True
 _DO_STEMMING = True
 _USE_STOPWORDS = True
@@ -60,7 +60,7 @@ for review in original_reviews:
   business = businesses.get(review.get('business_id'), None)
   if not business:
     continue
-  if 'Hotels' not in business.get('categories'):
+  if 'Restaurants' not in business.get('categories'):
     continue
   reviews.append(review)
 print '#reviews after filter: ', len(reviews)

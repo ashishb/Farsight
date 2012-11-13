@@ -35,20 +35,30 @@ limit = 10000
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/parsed_reviews.json') as reviews_file:
     progress = Progress('Write matrix', limit)
-    tid_set = set()
-    total_examples = 0
+    good = []
+    bad = []
     for (idx, line) in enumerate(reviews_file):
       progress.Update()
       if idx >= limit:
         break
-      total_examples += 1
       obj = json.loads(line)
-      output = []
-      output.append(obj['rating'])
-      output.extend(encode_tokens(lexicon, tid_set, obj['text']))
-      output.append(-1)
-      tmp_file.write(' '.join(str(x) for x in output))
-      tmp_file.write('\n')
+      if obj['rating'] >= 2.5:
+        good.append(obj)
+      else:
+        bad.append(obj)
+    reviews = zip(good, bad)
+
+    total_examples = 0
+    tid_set = set()
+    for objs in reviews:
+      for obj in objs:
+        total_examples += 1
+        output = []
+        output.append(obj['rating'])
+        output.extend(encode_tokens(lexicon, tid_set, obj['text']))
+        output.append(-1)
+        tmp_file.write(' '.join(str(x) for x in output))
+        tmp_file.write('\n')
 
 with open('data/matrix', 'w') as matrix_file:
   matrix_file.write('DOC_WORD_MATRIX\n')
