@@ -6,8 +6,8 @@ category = (sign(category - 1.5) + 1) / 2;
 
 trainError = [];
 testError = [];
-size = 500;
-for m = 1:size
+size = 5000;
+for m = size:size
   m
   % Train
   trainMatrix = sparseMatrix(1:m,:);

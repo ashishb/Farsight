@@ -4,7 +4,7 @@ close('all')
 clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = sign(category - 2.5);
+category = sign(category - 4.5);
 
 trainError = [];
 testError = [];

@@ -28,7 +28,7 @@ def encode_tokens(lexicon, tid_set, token_string):
 
 lexicon = Lexicon()
 
-limit = 10000
+limit = 30000
 #limit = 330071
 
 (_, tmp_file_name) = tempfile.mkstemp()
@@ -42,7 +42,7 @@ with open(tmp_file_name, 'w') as tmp_file:
       if idx >= limit:
         break
       obj = json.loads(line)
-      if obj['rating'] >= 4.5:
+      if obj['rating'] >= 3:
         good.append(obj)
       else:
         bad.append(obj)
