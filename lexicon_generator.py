@@ -11,6 +11,7 @@ _DO_SPELLING = True
 _DO_STEMMING = True
 _USE_STOPWORDS = True
 _CREATE_BIGRAMS = True
+_CREATE_TRIGRAMS = False
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -113,6 +114,16 @@ for review in reviews:
     for i in xrange(len(stemmed_review_text) - 1):
       bigrams.append(stemmed_review_text[i] + '-' + stemmed_review_text[i + 1])
     stemmed_review_text.extend(bigrams)
+
+  # Create tri-grams
+  if _CREATE_TRIGRAMS:
+    trigrams = []
+    for i in xrange(len(stemmed_review_text) - 2):
+      trigrams.append(
+          stemmed_review_text[i] + '-' +
+          stemmed_review_text[i + 1] + '-' +
+          stemmed_review_text[i + 2])
+    stemmed_review_text.extend(trigrams)
 
   review['stemmed_text'] = stemmed_review_text
 print ''

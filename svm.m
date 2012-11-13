@@ -6,10 +6,12 @@ clear
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
 category = sign(category - 2.5);
 
+mList = [];
 trainError = [];
 testError = [];
-size = 4000;
-for m = 1:50:size
+listIndex = 1;
+size = 15000;
+for m = 1:500:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -25,7 +27,7 @@ for m = 1:50:size
       error = error + 1;
     end
   end
-  trainError(m) = error / m;
+  trainError(listIndex) = error / m;
   
   % Test set
   testMatrix = sparseMatrix(size+1:size+m,:);
@@ -39,7 +41,10 @@ for m = 1:50:size
       error = error + 1;
     end
   end
-  testError(m) = error / m;
+  testError(listIndex) = error / m;
+  
+  mList(listIndex) = m;
+  listIndex = listIndex + 1;
 end
 
 trainError(length(trainError))
@@ -47,6 +52,6 @@ testError(length(testError))
 
 figure();
 hold all;
-plot(trainError);
-plot(testError);
+plot(mList, trainError);
+plot(mList, testError);
 legend('train', 'test')

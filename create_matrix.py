@@ -29,14 +29,14 @@ def encode_tokens(lexicon, tid_set, token_string):
 
 lexicon = Lexicon()
 
-limit = 30000
-#limit = 330071
+#limit = 30000
+limit = 330071
 
 rand = Random()
 (_, tmp_file_name) = tempfile.mkstemp()
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/parsed_reviews.json') as reviews_file:
-    progress = Progress('Write matrix', limit)
+    progress = Progress('Create buckets', limit)
     buckets = [[] for i in xrange(5)]
     for (idx, line) in enumerate(reviews_file):
       progress.Update()
@@ -52,10 +52,12 @@ with open(tmp_file_name, 'w') as tmp_file:
     del buckets[2]
     reviews = zip(*buckets)
 
+    progress = Progress('Write matrix', len(reviews))
     total_examples = 0
     tid_set = set()
     for objs in reviews:
       for obj in objs:
+        progress.Update()
         total_examples += 1
         output = []
         output.append(obj['rating'])
