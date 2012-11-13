@@ -35,18 +35,14 @@ limit = 30000
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/parsed_reviews.json') as reviews_file:
     progress = Progress('Write matrix', limit)
-    good = []
-    bad = []
+    buckets = [[] for i in xrange(5)]
     for (idx, line) in enumerate(reviews_file):
       progress.Update()
       if idx >= limit:
         break
       obj = json.loads(line)
-      if obj['rating'] >= 3:
-        good.append(obj)
-      else:
-        bad.append(obj)
-    reviews = zip(good, bad)
+      buckets[obj['rating'] - 1].append(obj)
+    reviews = zip(*buckets)
 
     total_examples = 0
     tid_set = set()
