@@ -6,10 +6,11 @@ from progress import Progress
 from random import Random
 from stemming.porter2 import stem
 
-_SAMPLING_RATE = 1.0
-_DO_SPELLING = True
+_SAMPLING_RATE = 0.1
+_DO_SPELLING = False
 _DO_STEMMING = True
 _USE_STOPWORDS = True
+_CREATE_BIGRAMS = False
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -24,7 +25,8 @@ _REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
 
 spell = Aspell(("lang", "en"))
 
-stopwords = set(stem(x.lower()) for x in open(_STOP_WORDS_FILE).read().split('\n'))
+stopwords = set(stem(x.lower()) for x in \
+    open(_STOP_WORDS_FILE).read().split('\n'))
 print '#stopwords', len(stopwords)
 
 businesses = {}
@@ -101,8 +103,15 @@ for review in reviews:
         token_cache[original_token] = '_IGNORE_'
     elif cached_token == '_IGNORE_':
       continue
+    else:
+      stemmed_review_text.append(cached_token)
 
   # Create bi-grams
+  if _CREATE_BIGRAMS:
+    bigrams = []
+    for i in xrange(len(stemmed_review_text) - 1):
+      bigrams.append(stemmed_review_text[i] + ' ' + stemmed_review_text[i + 1])
+    stemmed_review_text.extend(bigrams)
 
   review['stemmed_text'] = stemmed_review_text
 print ''
@@ -133,7 +142,8 @@ token_frequencies_list = token_frequencies.items()
 token_frequencies_list = sorted(
   token_frequencies_list, key=lambda entry: entry[1], reverse=True)
 with open(_YELP_LEXICON_FILE, 'w') as fp:
-  create_lexicon_progress = Progress('Write Lexicon file', len(token_frequencies_list))
+  create_lexicon_progress = Progress('Write Lexicon file', \
+      len(token_frequencies_list))
   for (k, v) in token_frequencies_list:
     create_lexicon_progress.Update()
     fp.write(k + ' ' + str(v) + '\n')

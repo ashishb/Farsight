@@ -2,11 +2,11 @@ close('all')
 clear
 
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = (sign(category - 1.5) + 1) / 2;
+%category = (sign(category - 2.5) + 1) / 2;
 
 trainError = [];
 testError = [];
-size = 5000;
+size = 3000;
 for m = size:size
   m
   % Train
@@ -44,8 +44,8 @@ end
 trainError(length(trainError))
 testError(length(testError))
 
-figure();
-hold all;
-plot(trainError);
-plot(testError);
-legend('train', 'test')
+%figure();
+%hold all;
+%plot(trainError);
+%plot(testError);
+%legend('train', 'test')
