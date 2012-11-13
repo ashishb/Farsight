@@ -6,7 +6,7 @@ from progress import Progress
 from random import Random
 from stemming.porter2 import stem
 
-_SAMPLING_RATE = 0.1
+_SAMPLING_RATE = 1.0
 _DO_SPELLING = True
 _DO_STEMMING = True
 _USE_STOPWORDS = True
@@ -101,6 +101,9 @@ for review in reviews:
         token_cache[original_token] = '_IGNORE_'
     elif cached_token == '_IGNORE_':
       continue
+
+  # Create bi-grams
+
   review['stemmed_text'] = stemmed_review_text
 print ''
 
