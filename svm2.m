@@ -1,20 +1,27 @@
+addpath('~/libsvm-3.13/matlab');
+
 close('all')
 clear
 
+tic();
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
+toc();
 category = sign(category - 2.5);
 
+mList = [];
 trainError = [];
 testError = [];
-size = 50;
-for m = size:size
+listIndex = 1;
+size = 300;
+for m = size:500:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
-  model = svmtrain(trainMatrix, trainCategory, 'kernel_function', 'rbf');
+  model = svmtrain(trainCategory, trainMatrix);
   
   % Test training data
-  output = svmclassify(model, trainMatrix) == 1;
+  [output, accuracy, decision_values] = ...
+    svmpredict(trainCategory, trainMatrix, model);
   
   error = 0;
   for i = 1:m
@@ -22,12 +29,13 @@ for m = size:size
       error = error + 1;
     end
   end
-  trainError(m) = error / m;
+  trainError(listIndex) = error / m;
   
   % Test set
   testMatrix = sparseMatrix(size+1:size+m,:);
   testCategory = category(size+1:size+m)';
-  output = svmclassify(model, testMatrix) == 1;
+  [output, accuracy, decision_values] = ...
+    svmpredict(testCategory, testMatrix, model);
   
   error = 0;
   for i = 1:m
@@ -35,14 +43,17 @@ for m = size:size
       error = error + 1;
     end
   end
-  testError(m) = error / m;
+  testError(listIndex) = error / m;
+  
+  mList(listIndex) = m;
+  listIndex = listIndex + 1;
 end
 
-trainError(length(trainError))
-testError(length(testError))
+%trainError(length(trainError))
+%testError(length(testError))
 
 %figure();
 %hold all;
-%plot(trainError);
-%plot(testError);
+%plot(mList, trainError);
+%plot(mList, testError);
 %legend('train', 'test')
