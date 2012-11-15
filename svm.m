@@ -4,8 +4,8 @@ close('all')
 %clear
 
 tic()
-[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = sign(category - 2.5);
+%[sparseMatrix, tokenlist, category] = readMatrix('data.raw/matrix');
+%category = sign(category - 2.5);
 toc()
 
 mList = [];
@@ -13,6 +13,7 @@ trainError = [];
 testError = [];
 listIndex = 1;
 size = 14500;
+tic()
 for m = size:500:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
@@ -48,6 +49,7 @@ for m = size:500:size
   mList(listIndex) = m;
   listIndex = listIndex + 1;
 end
+toc()
 
 trainError(length(trainError))
 testError(length(testError))

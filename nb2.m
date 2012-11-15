@@ -7,6 +7,7 @@ category = (sign(category - 2.5) + 1) / 2;
 trainError = [];
 testError = [];
 size = 3000;
+tic()
 for m = size:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
@@ -37,11 +38,12 @@ for m = size:size
     end
   end
   testError(m) = error / m;
-  error / m
+  %error / m
 end
+toc()
 
-trainError(length(trainError))
-testError(length(testError))
+1 - trainError(length(trainError))
+1 - testError(length(testError))
 
 %figure();
 %hold all;
