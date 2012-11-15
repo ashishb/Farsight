@@ -7,10 +7,10 @@ from random import Random
 from stemming.porter2 import stem
 
 _SAMPLING_RATE = 0.5
-_DO_SPELLING = True
-_DO_STEMMING = True
+_DO_SPELLING = False
+_DO_STEMMING = False
 _USE_STOPWORDS = True
-_CREATE_BIGRAMS = True
+_CREATE_BIGRAMS = False
 _CREATE_TRIGRAMS = False
 
 # Data Source
@@ -102,17 +102,28 @@ for review in reviews:
 
       # Ignore empty tokens.
       if len(token) > 1:
-        if not _USE_STOPWORDS or token not in stopwords:
+        if not _USE_STOPWORDS or \
+           token not in stopwords or \
+           token == 'not' or \
+           token == 'no':
           stemmed_review_text.append(token)
           token_cache[original_token] = token
+        else:
+          token_cache[original_token] = '_IGNORE_'
       else:
         token_cache[original_token] = '_IGNORE_'
 
   # Create bi-grams
   if _CREATE_BIGRAMS:
     bigrams = []
-    for i in xrange(len(stemmed_review_text) - 1):
+    stemmed_review_text_len = len(stemmed_review_text) 
+    i = 0
+    while i < stemmed_review_text_len - 1:
       bigrams.append(stemmed_review_text[i] + '-' + stemmed_review_text[i + 1])
+      if stemmed_review_text[i] == 'no' or stemmed_review_text[i] == 'not':
+        del stemmed_review_text[i + 1]
+        stemmed_review_text_len = len(stemmed_review_text) 
+      i = i + 1
     stemmed_review_text.extend(bigrams)
 
   # Create tri-grams

@@ -3,15 +3,17 @@ addpath('~/liblinear-1.92/matlab');  % add LIBLINEAR to the path
 close('all')
 %clear
 
-%[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-%category = sign(category - 2.5);
+tic()
+[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
+category = sign(category - 2.5);
+toc()
 
 mList = [];
 trainError = [];
 testError = [];
 listIndex = 1;
-size = 15000;
-for m = 1:500:size
+size = 14500;
+for m = size:500:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
