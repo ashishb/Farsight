@@ -76,7 +76,7 @@
 \begin_layout Standard
 We're given a set of user review data each of which is associated with a
  user rating.
- Our object is to build a model that is able to predict whether an unseen
+ Our objective is to build a model that is able to predict whether an unseen
  review is positive or negative.
 \end_layout
 

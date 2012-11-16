@@ -1,0 +1,81 @@
+%% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{arrows,fit,positioning}
+
+\renewcommand*\theenumi{\alph{enumi}}
+\renewcommand*\labelenumi{(\theenumi)}
+
+\makeatletter
+\def\imod#1{\allowbreak\mkern1mu({\operator@font mod}\,\,#1)}
+\makeatother
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{User Review Rating Prediction}
+
+
+\author{Sammy Leong, Ashish Bhatia}
+
+
+\date{Nov 15, 2012}
+
+\maketitle
+
+\section*{Objective}
+
+\input{objective.tex}
+
+
+\section*{Overview}
+
+\input{overview.tex}
+
+
+\section*{Data Source}
+
+\input{data_source.tex}
+
+
+\section*{Success Metric}
+
+\input{success_metric.tex}
+
+
+\section*{First Attempt (Baseline)}
+
+\input{first_attempt.tex}
+
+
+\section*{Second Attempt}
+
+\input{second_attempt.tex}
+
+
+\section*{Future Work}
+
+\input{future_work.tex}
+\end{document}

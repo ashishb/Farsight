@@ -78,8 +78,8 @@ For our first attempt we focused on trying out various learning algorithms
  on the original un-processed data as-is to get a sense of their capability
  for our given problem.
  Another goal is to choose the fastest algorithm which gives reasonably
- good results and use it to iterate while we work on data cleaning and feature
- selection.
+ good results and use it to iterate while we work on our pre-processing
+ pipeline.
 \end_layout
 
 \begin_layout Subsection*
@@ -89,6 +89,15 @@ Results
 \begin_layout Standard
 Here is a table that shows the training and generalization accuracies for
  each learning algorithm, along with the time it took to run.
+ The experiments were done using 
+\begin_inset Formula $14000$
+\end_inset
+
+ training examples and 
+\begin_inset Formula $14000$
+\end_inset
+
+ testing examples.
 \end_layout
 
 \begin_layout Standard
@@ -713,7 +722,7 @@ Secondly, it appears that nu-SVM with
 \end_inset
 
  in this case improved both the training and generalization accuracies significa
-ntly.
+ntly (as compared to the counterpart C-SVM results).
  In fact, the we were able to achieve the highest generalization accuracy
  using nu-SVM with the radial basis kernel.
  The only issue is that it takes a very long time to run.

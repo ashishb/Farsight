@@ -74,7 +74,7 @@
 \begin_body
 
 \begin_layout Standard
-Our goal is to find the learning algorithm along with data processing techniques
+Our goal is to find a learning algorithm along with data processing techniques
  that give us the highest generalization accuracy.
  To do this, we divided our data in half, trained with the first half, and
  then tested with the second half.

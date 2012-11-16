@@ -81,22 +81,20 @@ For the rest of the semeter, we will focus on the following work, all of
 \begin_layout Itemize
 We will take our processed data with spell correction and bigrams and retry
  some of the more expensive learning algorithms.
- In particular I believe that by tuning the nu-SVM algorithm we should be
- able to get substantially better results than what we currently have.
+ In particular we believe that by tuning the nu-SVM algorithm we should
+ be able to get substantially better results than what we currently have.
 \end_layout
 
 \begin_layout Itemize
-After having settled on an algorithm, which I believe will be nu-SVM, we
+After having settled on an algorithm, which we believe will be nu-SVM, we
  will play around with k-fold cross-verification to see whether we can further
  improve the results.
 \end_layout
 
 \begin_layout Itemize
-Try out other data processing techniques???
-\end_layout
-
-\begin_layout Itemize
-Try adding metadata features???
+We will try out other data processing techniques as we think of them.
+ One potential idea is to replace all adjectives with a common synonym with
+ the hope of further consolidating signals.
 \end_layout
 
 \end_body

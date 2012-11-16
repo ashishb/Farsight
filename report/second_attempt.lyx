@@ -294,20 +294,20 @@ Here is a table that shows the training and generalization accuracies.
 \emph on
 Individual
 \emph default
- section shows experiment results where we use each data processing technique
+ section shows experiment results where we used each data processing technique
  individually.
  The 
 \emph on
 Incremental
 \emph default
- section shows experiment results where we incrementally combine data processing
- techniques.
+ section shows experiment results where we incrementally combined data processin
+g techniques.
  Finally, the 
 \emph on
 Optimal
 \emph default
- section shows experiment results where we combine only data processing
- techniques that we think will give us optimal results.
+ section shows experiment results where we combined only data processing
+ techniques that we believe to give us optimal results.
 \end_layout
 
 \begin_layout Standard
@@ -834,7 +834,7 @@ Spell + Bi-grams
 
 \begin_layout Standard
 Here is a graph that shows the number of training examples vs training/generaliz
-at error for the case of using only spell correction and bi-grams.
+ation error for the case of using only spell correction and bi-grams.
 \end_layout
 
 \begin_layout Standard
@@ -854,8 +854,8 @@ Discussion
 
 \begin_layout Standard
 Individually, every data processing technique improved the generalization
- accuracy but all of them, with the exception of bi-grams, also reduced
- training accuracy.
+ accuracy but all of them with the exception of bi-grams, also reduced training
+ accuracy.
  When combined incrementally, however, it appears that stemming and stopword
  removal actually reduces generalization accuracy.
 \end_layout
@@ -865,7 +865,7 @@ From the individual and incremental experiment results, we gathered that
  the most promising data processing techniques are spell correction and
  bi-grams.
  Thus we combined only those two and indeed we achieved training and generalizat
-ion accuracies that were superior to the best.
+ion accuracies that were superior to the rest.
 \end_layout
 
 \begin_layout Standard
@@ -876,7 +876,7 @@ Looking at the training error vs generalization error, it is as expected
  error will continue to go up where as the generalization error will likely
  flat off.
  Judging from this we will have to either explore other pre-processing technique
-s or other learning algorithms.
+s, other learning algorithms, or other tuning techniques.
 \end_layout
 
 \end_body

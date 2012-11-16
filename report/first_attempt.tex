@@ -1,0 +1,64 @@
+For our first attempt we focused on trying out various learning algorithms
+on the original un-processed data as-is to get a sense of their capability
+for our given problem. Another goal is to choose the fastest algorithm
+which gives reasonably good results and use it to iterate while we
+work on our pre-processing pipeline.
+
+
+\subsection*{Results}
+
+Here is a table that shows the training and generalization accuracies
+for each learning algorithm, along with the time it took to run. The
+experiments were done using $14000$ training examples and $14000$
+testing examples.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+ & Train & Test & Time\tabularnewline
+\hline 
+\multicolumn{4}{|c}{\emph{Matlab}}\tabularnewline
+\hline 
+Naive Bayes (mn) & $91.67$ & $81.27$ & $1.05$\tabularnewline
+\hline 
+\multicolumn{4}{|c}{\emph{Liblinear}}\tabularnewline
+\hline 
+Logistic Regression & $97.39$ & $81.67$ & $1.58$\tabularnewline
+\hline 
+L2-reg SVM (linear) & $99.69$ & $78.71$ & $2.86$\tabularnewline
+\hline 
+\multicolumn{4}{|c}{Libsvm}\tabularnewline
+\hline 
+C-SVM (linear) & $98.99$ & $78.86$ & $786$\tabularnewline
+\hline 
+C-SVM (radial) & $70.26$ & $69.68$ & $356$\tabularnewline
+\hline 
+C-SVM (sigmoid) & $65.11$ & $65.43$ & $359$\tabularnewline
+\hline 
+nu-SVM{*} (linear) & $87.78$ & $83.75$ & $277$\tabularnewline
+\hline 
+nu-SVM{*} (radial) & $88.80$ & $83.91$ & $296$\tabularnewline
+\hline 
+nu-SVM{*} (sigmoid) & $84.78$ & $81.49$ & $291$\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+{*} $nu=0.5$
+
+
+\subsection*{Discussion}
+
+Firstly, it's quite clear that liblinear runs significantly faster
+than libsvm. For this reason, we will iterate using liblinear when
+we evaluate the performance of various pre-processing techniques.
+In particular, we will use logistic regression because it has higher
+generalization accuracy than L2-regularized SVM with linear kernel.
+
+Secondly, it appears that nu-SVM with $nu=0.5$ in this case improved
+both the training and generalization accuracies significantly (as
+compared to the counterpart C-SVM results). In fact, the we were able
+to achieve the highest generalization accuracy using nu-SVM with the
+radial basis kernel. The only issue is that it takes a very long time
+to run. For this reason we will only revisit it after we've settled
+on a good pre-processing pipeline.

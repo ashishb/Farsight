@@ -76,10 +76,10 @@
 \begin_layout Standard
 To solve this problem, first we evaluated a number of learning algorithms
  such as Logistic Regression, Naive Bayes, and SVM on the original raw data
- as-is to get a sense of their feasibility, capabiilty, and speed.
- Then we developed our own pre-processing techniques to transform the original
- data to better emphasize sentimental features, which we evaluate with one
- of the learning algorithms.
+ as-is to get a sense of their feasibility, capability, and speed.
+ Then we developed our own pre-processing pipeline to transform the original
+ data to better emphasize sentimental features, which we evaluated with
+ one of the learning algorithms.
 \end_layout
 
 \begin_layout Standard
