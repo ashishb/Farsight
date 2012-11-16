@@ -402,7 +402,7 @@ Libsvm
 \begin_inset Text
 
 \begin_layout Plain Layout
-C-SVC (linear)
+C-SVM (linear)
 \end_layout
 
 \end_inset
@@ -449,7 +449,7 @@ C-SVC (linear)
 \begin_inset Text
 
 \begin_layout Plain Layout
-C-SVC (radial)
+C-SVM (radial)
 \end_layout
 
 \end_inset
@@ -496,7 +496,7 @@ C-SVC (radial)
 \begin_inset Text
 
 \begin_layout Plain Layout
-C-SVC (sigmoid)
+C-SVM (sigmoid)
 \end_layout
 
 \end_inset
@@ -543,7 +543,7 @@ C-SVC (sigmoid)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nu-SVC* (linear)
+nu-SVM* (linear)
 \end_layout
 
 \end_inset
@@ -590,7 +590,7 @@ nu-SVC* (linear)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nu-SVC* (radial)
+nu-SVM* (radial)
 \end_layout
 
 \end_inset
@@ -637,7 +637,7 @@ nu-SVC* (radial)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nu-SVC* (sigmoid)
+nu-SVM* (sigmoid)
 \end_layout
 
 \end_inset
@@ -708,15 +708,14 @@ tion accuracy than L2-regularized SVM with linear kernel.
 \end_layout
 
 \begin_layout Standard
-Secondly, it appears that by limiting the number of support vectors (to
- 
-\begin_inset Formula $50\%$
+Secondly, it appears that nu-SVM with 
+\begin_inset Formula $nu=0.5$
 \end_inset
 
-) in this case improved both the training and generalization accuracies
- significantly.
+ in this case improved both the training and generalization accuracies significa
+ntly.
  In fact, the we were able to achieve the highest generalization accuracy
- using nu-SVC with the radial basis kernel.
+ using nu-SVM with the radial basis kernel.
  The only issue is that it takes a very long time to run.
  For this reason we will only revisit it after we've settled on a good pre-proce
 ssing pipeline.

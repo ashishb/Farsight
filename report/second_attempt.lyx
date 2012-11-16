@@ -837,6 +837,17 @@ Here is a graph that shows the number of training examples vs training/generaliz
 at error for the case of using only spell correction and bi-grams.
 \end_layout
 
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename logit-spell-bigram-error.eps
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection*
 Discussion
 \end_layout
@@ -855,6 +866,17 @@ From the individual and incremental experiment results, we gathered that
  bi-grams.
  Thus we combined only those two and indeed we achieved training and generalizat
 ion accuracies that were superior to the best.
+\end_layout
+
+\begin_layout Standard
+Looking at the training error vs generalization error, it is as expected
+ that by adding more training examples, the training error (bias) goes up
+ where as the generalization error (variance) goes down.
+ However the trend suggests that as we add more training examples, training
+ error will continue to go up where as the generalization error will likely
+ flat off.
+ Judging from this we will have to either explore other pre-processing technique
+s or other learning algorithms.
 \end_layout
 
 \end_body
