@@ -7,10 +7,10 @@ from random import Random
 from stemming.porter2 import stem
 
 _SAMPLING_RATE = 0.5
-_DO_SPELLING = False
+_DO_SPELLING = True
 _DO_STEMMING = False
 _USE_STOPWORDS = False
-_CREATE_BIGRAMS = False
+_CREATE_BIGRAMS = True
 _CREATE_TRIGRAMS = False
 
 # Data Source

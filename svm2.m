@@ -4,21 +4,21 @@ close('all')
 %clear
 
 tic();
-[sparseMatrix, tokenlist, category] = readMatrix('data.spell.bigram/matrix');
-category = sign(category - 2.5);
+[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
+category = sign(category - 3.5);
 toc();
 
 mList = [];
 trainError = [];
 testError = [];
 listIndex = 1;
-size = 14500;
+size = 14000;
 tic();
-for m = size:500:size
+for m = size:100:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
-  model = svmtrain(trainCategory, trainMatrix, '-s 1 -t 2 -n 0.5');
+  model = svmtrain(trainCategory, trainMatrix, '-h 0 -s 1 -t 2 -n 0.5');
   
   % Test training data
   [output, accuracy, decision_values] = ...
@@ -51,11 +51,8 @@ for m = size:500:size
 end
 toc();
 
-1 - trainError(length(trainError))
-1 - testError(length(testError))
-
-%figure();
-%hold all;
-%plot(mList, trainError);
-%plot(mList, testError);
-%legend('train', 'test')
+figure();
+hold all;
+plot(mList, trainError);
+plot(mList, testError);
+legend('train', 'test')
