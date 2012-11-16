@@ -1,23 +1,24 @@
 addpath('~/libsvm-3.13/matlab');
 
 close('all')
-clear
+%clear
 
 tic();
-[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-toc();
+[sparseMatrix, tokenlist, category] = readMatrix('data.spell.bigram/matrix');
 category = sign(category - 2.5);
+toc();
 
 mList = [];
 trainError = [];
 testError = [];
 listIndex = 1;
-size = 300;
+size = 14500;
+tic();
 for m = size:500:size
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
-  model = svmtrain(trainCategory, trainMatrix);
+  model = svmtrain(trainCategory, trainMatrix, '-s 1 -t 2 -n 0.5');
   
   % Test training data
   [output, accuracy, decision_values] = ...
@@ -48,9 +49,10 @@ for m = size:500:size
   mList(listIndex) = m;
   listIndex = listIndex + 1;
 end
+toc();
 
-%trainError(length(trainError))
-%testError(length(testError))
+1 - trainError(length(trainError))
+1 - testError(length(testError))
 
 %figure();
 %hold all;

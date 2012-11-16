@@ -74,14 +74,50 @@
 \begin_body
 
 \begin_layout Standard
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Curabitur ut elit at erat mollis imperdiet aliquet non augue.
- Nam convallis nunc vel tellus gravida vel aliquam urna commodo.
- Maecenas sit amet ipsum enim.
- Curabitur ullamcorper nisi non nunc condimentum vitae fermentum felis luctus.
- Quisque tortor ante, pharetra a faucibus in, imperdiet in sem.
- Donec at ante vel sem vulputate congue congue et urna.
- Donec dapibus facilisis orci eget gravida.
+We gathered our user review data from the Yelp academic data set which contains
+ user reviews of local businesses near Stanford University.
+ 
+\end_layout
+
+\begin_layout Standard
+Each review contains a text sequence representing the user review along
+ with a numerical rating that ranges from 
+\begin_inset Formula $1$
+\end_inset
+
+ to 
+\begin_inset Formula $5$
+\end_inset
+
+.
+ The first thing we did was relabel each review as positive or negative.
+ Reviews with ratings 
+\begin_inset Formula $1,2$
+\end_inset
+
+ are deemed negative, reviews with ratings 
+\begin_inset Formula $4,5$
+\end_inset
+
+ are deemed positive, and reviews with rating 
+\begin_inset Formula $3$
+\end_inset
+
+ are randomly labeled as positive or negative.
+\end_layout
+
+\begin_layout Standard
+As it turns out, 
+\begin_inset Formula $80\%$
+\end_inset
+
+ of the reviews are positive which means the data is highly skewed to begin
+ with.
+ To address this, we reshuffle the data such that we have equal number of
+ positive and negative reviews, and that positive and negative reviews are
+ interleaved.
+ We had to throw out a lot of positive reviews but we're still left with
+ abdundant training examples.
 \end_layout
 
 \end_body

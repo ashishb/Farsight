@@ -74,14 +74,21 @@
 \begin_body
 
 \begin_layout Standard
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Curabitur ut elit at erat mollis imperdiet aliquet non augue.
- Nam convallis nunc vel tellus gravida vel aliquam urna commodo.
- Maecenas sit amet ipsum enim.
- Curabitur ullamcorper nisi non nunc condimentum vitae fermentum felis luctus.
- Quisque tortor ante, pharetra a faucibus in, imperdiet in sem.
- Donec at ante vel sem vulputate congue congue et urna.
- Donec dapibus facilisis orci eget gravida.
+For the rest of the semeter, we will focus on the following work, all of
+ which have a common goal of further improving the generalization accuracy.
+\end_layout
+
+\begin_layout Itemize
+We will take our processed data with spell correction and bigrams and retry
+ some of the more expensive learning algorithms.
+ In particular I believe that by tuning the nu-SVC algorithm we should be
+ able to get substantially better results than what we currently have.
+\end_layout
+
+\begin_layout Itemize
+After having settled on an algorithm, which I believe will be nu-SVC, we
+ will play around with k-fold cross-verification to see whether we can further
+ improve the results.
 \end_layout
 
 \end_body

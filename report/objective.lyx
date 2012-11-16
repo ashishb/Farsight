@@ -74,14 +74,10 @@
 \begin_body
 
 \begin_layout Standard
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Curabitur ut elit at erat mollis imperdiet aliquet non augue.
- Nam convallis nunc vel tellus gravida vel aliquam urna commodo.
- Maecenas sit amet ipsum enim.
- Curabitur ullamcorper nisi non nunc condimentum vitae fermentum felis luctus.
- Quisque tortor ante, pharetra a faucibus in, imperdiet in sem.
- Donec at ante vel sem vulputate congue congue et urna.
- Donec dapibus facilisis orci eget gravida.
+We're given a set of user review data each of which is associated with a
+ user rating.
+ Our object is to build a model that is able to predict whether an unseen
+ review is positive or negative.
 \end_layout
 
 \end_body

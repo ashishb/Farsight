@@ -74,14 +74,12 @@
 \begin_body
 
 \begin_layout Standard
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Curabitur ut elit at erat mollis imperdiet aliquet non augue.
- Nam convallis nunc vel tellus gravida vel aliquam urna commodo.
- Maecenas sit amet ipsum enim.
- Curabitur ullamcorper nisi non nunc condimentum vitae fermentum felis luctus.
- Quisque tortor ante, pharetra a faucibus in, imperdiet in sem.
- Donec at ante vel sem vulputate congue congue et urna.
- Donec dapibus facilisis orci eget gravida.
+Our goal is to find the learning algorithm along with data processing techniques
+ that give us the highest generalization accuracy.
+ To do this, we divided our data in half, trained with the first half, and
+ then tested with the second half.
+ The former gives us the training accuracy while the latter gives us the
+ generalization accuracy.
 \end_layout
 
 \end_body

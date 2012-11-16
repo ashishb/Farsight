@@ -106,14 +106,14 @@ filename "objective.lyx"
 \end_layout
 
 \begin_layout Section*
-Background
+Overview
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand input
 preview true
-filename "background.lyx"
+filename "overview.lyx"
 
 \end_inset
 

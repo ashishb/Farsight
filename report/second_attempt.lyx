@@ -74,7 +74,7 @@
 \begin_body
 
 \begin_layout Standard
-For our second attempt, we focused on data cleaning and feature selection
+For our second attempt, we focused on data processing and feature selection
  with the goal of reducing the noise in the data as much as possible.
  Here we only made use of logistic regression with 
 \begin_inset Formula $14000$
@@ -830,6 +830,11 @@ Spell + Bi-grams
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Here is a graph that shows the number of training examples vs training/generaliz
+at error for the case of using only spell correction and bi-grams.
 \end_layout
 
 \begin_layout Subsection*
