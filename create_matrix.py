@@ -43,13 +43,18 @@ with open(tmp_file_name, 'w') as tmp_file:
       if idx >= limit:
         break
       obj = json.loads(line)
+      # Convert rating into binary values.
       if obj['rating'] == 3:
         if rand.random() < 0.5:
-          obj['rating'] = 4
+          obj['rating'] = 1
         else:
-          obj['rating'] = 2
-      buckets[obj['rating'] - 1].append(obj)
-    del buckets[2]
+          obj['rating'] = 0
+      elif obj['rating'] > 3:
+        obj['rating'] = 1
+      else:
+        obj['rating'] = 0
+      buckets[obj['rating']].append(obj)
+    # del buckets[2]  # Ashish to Sammy: Why is this even needed?
     reviews = zip(*buckets)
 
     progress = Progress('Write matrix', len(reviews))
@@ -73,3 +78,4 @@ with open('data/matrix', 'w') as matrix_file:
   with open(tmp_file_name) as f:
     for line in f:
       matrix_file.write(line)
+print 'Wrote data to "./data/matrix" successfully."

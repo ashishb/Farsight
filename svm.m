@@ -1,10 +1,10 @@
-addpath('~/liblinear-1.92/matlab');  % add LIBLINEAR to the path
+addpath('./liblinear-1.92/matlab');  % add LIBLINEAR to the path
 
 close('all')
 %clear
 
 tic()
-[sparseMatrix, tokenlist, category] = readMatrix('data.raw/matrix');
+[sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
 category = sign(category - 2.5);
 toc()
 
