@@ -37,7 +37,7 @@ rand = Random()
 with open(tmp_file_name, 'w') as tmp_file:
   with open('data/parsed_reviews.json') as reviews_file:
     progress = Progress('Create buckets', limit)
-    buckets = [[] for i in xrange(2)]
+    buckets = [[] for i in xrange(5)]
     for (idx, line) in enumerate(reviews_file):
       progress.Update()
       if idx >= limit:
