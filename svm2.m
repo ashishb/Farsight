@@ -5,16 +5,16 @@ close('all')
 
 tic();
 [sparseMatrix, tokenlist, category] = readMatrix('data/matrix');
-category = sign(category - 3.5);
+category = sign(category - 2.5);
 toc();
 
 mList = [];
 trainError = [];
 testError = [];
 listIndex = 1;
-size = 14000;
+siz = 6000;
 tic();
-for m = size:100:size
+for m = 2:100:siz
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -33,8 +33,8 @@ for m = size:100:size
   trainError(listIndex) = error / m;
   
   % Test set
-  testMatrix = sparseMatrix(size+1:size+m,:);
-  testCategory = category(size+1:size+m)';
+  testMatrix = sparseMatrix(siz+1:siz+m,:);
+  testCategory = category(siz+1:siz+m)';
   [output, accuracy, decision_values] = ...
     svmpredict(testCategory, testMatrix, model);
   

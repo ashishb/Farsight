@@ -23,15 +23,16 @@ matrix = sparse(1, 1, 0, rowscols(2), rowscols(1)); % the transpose!
 % document word matrix
 % The i-th component is 1 if the i-th document (row) in the document word
 % matrix is SPAM, and 0 otherwise.
-category = zeros(rowscols(1), 1);
+%category = zeros(rowscols(1), 1);
+category = matrix(rowscols(1));
 
 %Read in the matrix and the categories
 for m = 1:rowscols(1) % as many rows as number of documents
   line = fgetl(fid);
   nums = sscanf(line, '%d');
-  if size(nums)(1) > 1
+  %if size(nums)(1) > 1
     category(m) = nums(1);
-  end
+  %end
   matrix(1 + cumsum(nums(2:2:end - 1)), m) = nums(3:2:end - 1);
 end
 

@@ -12,9 +12,9 @@ mList = [];
 trainError = [];
 testError = [];
 listIndex = 1;
-size = 14500;
+siz = 6000;
 tic()
-for m = 1:500:size
+for m = 1:500:siz
   % Train
   trainMatrix = sparseMatrix(1:m,:);
   trainCategory = category(1:m)';
@@ -33,8 +33,8 @@ for m = 1:500:size
   trainError(listIndex) = error / m;
   
   % Test set
-  testMatrix = sparseMatrix(size+1:size+m,:);
-  testCategory = category(size+1:size+m)';
+  testMatrix = sparseMatrix(siz+1:siz+m,:);
+  testCategory = category(siz+1:siz+m)';
   [output, accuracy, decision_values] = ...
     predict(testCategory, testMatrix, model);
   
