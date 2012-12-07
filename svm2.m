@@ -1,4 +1,4 @@
-addpath('./libsvm-3.13/matlab');
+addpath('./libsvm-3.14/matlab');
 
 close('all')
 %clear

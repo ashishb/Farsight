@@ -6,7 +6,7 @@ from progress import Progress
 from random import Random
 from stemming.porter2 import stem
 
-_SAMPLING_RATE = 0.5
+_SAMPLING_RATE = 0.1
 _DO_SPELLING = True
 _DO_STEMMING = False
 _USE_STOPWORDS = False
