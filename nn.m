@@ -7,7 +7,7 @@ trainMatrix = sparseMatrix(:,:);
 trainCategory = category(:)';
 
 siz = 6000;
-for m = 1:500:siz
+for m = 1:40:siz
   disp 'Starting training for m=', m
   x = trainMatrix(1:m, :)';
   t = trainCategory(1:m);

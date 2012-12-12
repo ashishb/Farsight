@@ -6,12 +6,26 @@ from progress import Progress
 from random import Random
 from stemming.porter2 import stem
 
-_SAMPLING_RATE = 0.1
+import constants
+
+_SAMPLING_RATE = 0.6
 _DO_SPELLING = True
 _DO_STEMMING = False
-_USE_STOPWORDS = False
+#_USE_STOPWORDS = True
+_IGNORE_STOPWORDS = True
 _CREATE_BIGRAMS = True
 _CREATE_TRIGRAMS = False
+_CREATE_QUADGRAMS = False
+_CREATE_PENTAGRAMS = False
+_CREATE_HEXAGRAMS = False
+_CREATE_SEPTAGRAMS = False
+
+print 'Create bigrams:', _CREATE_BIGRAMS
+print 'Create trigrams:', _CREATE_TRIGRAMS
+print 'Create quadgrams:', _CREATE_QUADGRAMS
+print 'Create pentagrams:', _CREATE_PENTAGRAMS
+print 'Create hexagrams:', _CREATE_HEXAGRAMS
+print 'Create septagrams:', _CREATE_SEPTAGRAMS
 
 # Data Source
 _YELP_DATASET = './data/yelp_academic_dataset.json'
@@ -21,13 +35,21 @@ _YELP_PARSED_REVIEWS = './data/parsed_reviews.json'
 _YELP_LEXICON_FILE = './data/lexicon.txt'
 # Stop words file.
 _STOP_WORDS_FILE = './lib/stopwords.txt'
+# Power words file.
+_POWER_WORDS_FILE = './lib/powerwords.txt'
 # Regex to split tokens.
-_REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
+#_REGEX_TOKEN_SPLIT_PATTERN = '[ \.\n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
+_REGEX_TOKEN_SPLIT_PATTERN = '[ \n\t,\:;\\\"/\]\[\{\}\(\)&\=\?]'
 
 spell = Aspell(("lang", "en"))
 
 stopwords = set(stem(x.lower()) for x in \
     open(_STOP_WORDS_FILE).read().split('\n'))
+powerwords = set()
+for x in open(_POWER_WORDS_FILE).read().split('\n'):
+  x = x.strip()
+  if x:
+    powerwords.add(x)
 print '#stopwords', len(stopwords)
 
 businesses = {}
@@ -75,8 +97,13 @@ stem_progress = Progress('Stemming', len(reviews))
 for review in reviews:
   stem_progress.Update()
   stemmed_review_text = []
-  review_text = re.sub('[^a-zA-Z0-9]', ' ', review.get('text'))
+  review_text = re.sub('[^a-zA-Z0-9\.]', ' ', review.get('text'))
   for token in re.split(_REGEX_TOKEN_SPLIT_PATTERN, review_text):
+    token = token.strip().lower()
+    token_ends_with_full_stop = False
+    if token.endswith('.'):
+      token_ends_with_full_stop = True
+      token = token[:-1]
     original_token = token = token.strip().lower()
     cached_token = token_cache.get(token, None)
     if cached_token:
@@ -102,41 +129,84 @@ for review in reviews:
 
       # Ignore empty tokens.
       if len(token) > 1:
-        if not _USE_STOPWORDS or \
-           token not in stopwords or \
-           token == 'not' or \
-           token == 'no':
+        if not _IGNORE_STOPWORDS or token not in stopwords:
           stemmed_review_text.append(token)
+          if token_ends_with_full_stop:
+            stemmed_review_text.append('.')
           token_cache[original_token] = token
         else:
           token_cache[original_token] = '_IGNORE_'
       else:
         token_cache[original_token] = '_IGNORE_'
 
+  def add_k_grams(stemmed_review_text, K):
+    kgrams = []
+    for i in xrange(len(stemmed_review_text) - (K - 1)):
+      tmp  = ''
+      for j in range(0, K):
+        if stemmed_review_text[i+j] == '.':
+          break  # Do not cross the end-of-sentence "fullstop" boundary.
+          #import pdb; pdb.set_trace()
+        tmp += stemmed_review_text[i+j] + '-'
+      # In case of "not really good", don't make a feature "really good". 
+      if i>0 and (stemmed_review_text[i-1].lower().startswith('no')):
+        continue
+      # FIXME: this is useless - delete this.
+      # no[t] should be the first word, if it ever appears in the kgram ("no no" is OK).
+      if (stemmed_review_text[i].lower not in ('no', 'not') and
+          (('no-' in tmp) or ('not-' in tmp))):
+          continue;
+      # Yes, this is not the best way but still to count only powerful words (like "no").
+      # We cannot create all kgrams since that blows up the space even for K=4
+## FIXME: this seems useless - delete this.
+##      for power_word in powerwords:
+##        if power_word in tmp and not tmp.endswith('not-'):
+##          kgrams.append(tmp)
+      kgrams.append(tmp[:-1])
+    return kgrams
+
+  stemmed_review_text_with_k_grams = []
+  for x in stemmed_review_text:
+    if x != '.':
+      stemmed_review_text_with_k_grams.append(x) 
+
   # Create bi-grams
   if _CREATE_BIGRAMS:
-    bigrams = []
-    stemmed_review_text_len = len(stemmed_review_text) 
-    i = 0
-    while i < stemmed_review_text_len - 1:
-      bigrams.append(stemmed_review_text[i] + '-' + stemmed_review_text[i + 1])
-      if stemmed_review_text[i] == 'no' or stemmed_review_text[i] == 'not':
-        del stemmed_review_text[i + 1]
-        stemmed_review_text_len = len(stemmed_review_text) 
-      i = i + 1
-    stemmed_review_text.extend(bigrams)
+    K = 2
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
+##    bigrams = []
+##    stemmed_review_text_len = len(stemmed_review_text) 
+##    i = 0
+##    while i < stemmed_review_text_len - 1:
+##      bigrams.append(stemmed_review_text[i] + '-' + stemmed_review_text[i + 1])
+##      if stemmed_review_text[i] == 'no' or stemmed_review_text[i] == 'not':
+##         del stemmed_review_text[i + 1]
+##         stemmed_review_text_len = len(stemmed_review_text) 
+##      i = i + 1
+##    stemmed_review_text_with_k_grams.extend(bigrams)
 
-  # Create tri-grams
+  # Create tri-grams.
   if _CREATE_TRIGRAMS:
-    trigrams = []
-    for i in xrange(len(stemmed_review_text) - 2):
-      trigrams.append(
-          stemmed_review_text[i] + '-' +
-          stemmed_review_text[i + 1] + '-' +
-          stemmed_review_text[i + 2])
-    stemmed_review_text.extend(trigrams)
+    K = 3
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
+  # Create quad-grams
+  if _CREATE_QUADGRAMS:
+    K = 4
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
+  # Create penta-grams
+  if _CREATE_PENTAGRAMS:
+    K = 5
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
+  # Create hexa-grams
+  if _CREATE_HEXAGRAMS:
+    K = 6
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
+  # Create septa-grams
+  if _CREATE_SEPTAGRAMS:
+    K = 7
+    stemmed_review_text_with_k_grams.extend(add_k_grams(stemmed_review_text, K))
 
-  review['stemmed_text'] = stemmed_review_text
+  review['stemmed_text'] = stemmed_review_text_with_k_grams
 print ''
 
 # Write parsed reviews
@@ -169,7 +239,8 @@ with open(_YELP_LEXICON_FILE, 'w') as fp:
       len(token_frequencies_list))
   for (k, v) in token_frequencies_list:
     create_lexicon_progress.Update()
-    fp.write(k + ' ' + str(v) + '\n')
+    if not _IGNORE_STOPWORDS or (k not in stopwords): 
+      fp.write(k + ' ' + str(v) + '\n')
 print ''
 
 print 'Everything done.'
