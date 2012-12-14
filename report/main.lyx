@@ -87,7 +87,7 @@ Sammy Leong, Ashish Bhatia
 \end_layout
 
 \begin_layout Date
-Nov 15, 2012
+Dec 14, 2012
 \end_layout
 
 \begin_layout Section*
@@ -181,14 +181,25 @@ filename "second_attempt.lyx"
 \end_layout
 
 \begin_layout Section*
-Future Work
+Further enhancements
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand input
 preview true
-filename "future_work.lyx"
+filename "third_attempt.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand input
+preview true
+filename "references.lyx"
 
 \end_inset
 

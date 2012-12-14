@@ -74,8 +74,14 @@
 \begin_body
 
 \begin_layout Standard
-We gathered our user review data from the Yelp academic data set which contains
- user reviews of local businesses near Stanford University.
+We gathered our user review data from the Yelp academic data set
+\begin_inset CommandInset citation
+LatexCommand cite
+key "citeulike:10655724"
+
+\end_inset
+
+ which contains user reviews of local businesses near Stanford University.
  
 \end_layout
 

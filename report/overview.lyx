@@ -74,18 +74,25 @@
 \begin_body
 
 \begin_layout Standard
-To solve this problem, first we evaluated a number of learning algorithms
- such as Logistic Regression, Naive Bayes, and SVM on the original raw data
- as-is to get a sense of their feasibility, capability, and speed.
+To solve this problem
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Qu:2010:BMR:1873781.1873884,li2010"
+
+\end_inset
+
+, first we evaluated a number of learning algorithms such as Logistic Regression
+, Naive Bayes, and SVM on the original raw data as-is to get a sense of
+ their feasibility, capability, and speed.
  Then we developed our own pre-processing pipeline to transform the original
  data to better emphasize sentimental features, which we evaluated with
  one of the learning algorithms.
+ 
 \end_layout
 
 \begin_layout Standard
-Having developed a good pipeline for pre-processing the data, our next step
- will be to revisit the learning algorithms and tune them to achieve even
- better results.
+Based on our analysis, we removed several redundant and noisy features to
+ further improve the accuracy of our pipeline.
 \end_layout
 
 \end_body
