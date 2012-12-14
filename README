@@ -1,0 +1,3 @@
+python lexicon_generator.py  # To generate lexicon.
+python create_matrix.py  # To create matrix.
+# Now run either svm or svm2
