@@ -1,4 +1,5 @@
 import json
+import nltk
 import re
 
 from pyaspell import Aspell
@@ -8,10 +9,9 @@ from stemming.porter2 import stem
 
 import constants
 
-_SAMPLING_RATE = 0.6
+_SAMPLING_RATE = 0.1
 _DO_SPELLING = True
 _DO_STEMMING = False
-#_USE_STOPWORDS = True
 _IGNORE_STOPWORDS = True
 _CREATE_BIGRAMS = True
 _CREATE_TRIGRAMS = False
@@ -19,6 +19,44 @@ _CREATE_QUADGRAMS = False
 _CREATE_PENTAGRAMS = False
 _CREATE_HEXAGRAMS = False
 _CREATE_SEPTAGRAMS = False
+# Allowed parts of speech.
+_ALLOWED_POS = set([
+'CC', #   coordinating conjunction  and
+'CD', #   cardinal number   1, third
+'DT', #   determiner  the
+'EX', #  existential there  there is
+'#FW', #   foreign word  d'hoevre
+'#IN', #   preposition/subordinating conjunction   in, of, like
+'JJ', #   adjective   green
+'JJR', #  adjective, comparative  greener
+'JJS', #  adjective, superlative  greenest
+#LS   list marker   1)
+#MD   modal   could', will
+#NN   noun', singular or mass  table
+#NNS  noun plural   tables
+#NNP  proper noun', singular   John
+#NNPS   proper noun', plural   Vikings
+#PDT  predeterminer  both the boys
+#POS  possessive ending   friend's
+#PRP  personal pronoun  I', he, it
+#PRP$   possessive pronoun  my', his
+'RB', #   adverb  however, usually, naturally, here, good
+'RBR', #  adverb, comparative   better
+'RBS', #  adverb, superlative   best
+#RP   particle  give up
+#TO   to to go', to him
+#UH   interjection  uhhuhhuhh
+'VB', #   verb, base form   take
+'VBD', #  verb, past tense  took
+'VBG', #  verb, gerund/present participle   taking
+'VBN', #  verb, past participle   taken
+'VBP', #  verb, sing. present, non-3d   take
+'VBZ', # verb, 3rd person sing. present  takes
+#WDT  wh-determiner   which
+'WP', #   wh-pronoun  who, what
+'WP$', #  possessive wh-pronoun   whose
+'WRB', #  wh-abverb   where, when
+])
 
 print 'Create bigrams:', _CREATE_BIGRAMS
 print 'Create trigrams:', _CREATE_TRIGRAMS
@@ -93,18 +131,31 @@ print ''
 
 # Stemming
 token_cache = {}
+nltk_pos_cache = {}
 stem_progress = Progress('Stemming', len(reviews))
 for review in reviews:
   stem_progress.Update()
   stemmed_review_text = []
   review_text = re.sub('[^a-zA-Z0-9\.]', ' ', review.get('text'))
+  for (token, pos) in nltk.pos_tag(re.split(_REGEX_TOKEN_SPLIT_PATTERN, review_text)):
+    if pos in _ALLOWED_POS:
+    # over-writing is fine here, we are looking for approximate pos anyways.
+      nltk_pos_cache[token] = pos
   for token in re.split(_REGEX_TOKEN_SPLIT_PATTERN, review_text):
     token = token.strip().lower()
     token_ends_with_full_stop = False
     if token.endswith('.'):
       token_ends_with_full_stop = True
       token = token[:-1]
-    original_token = token = token.strip().lower()
+    # Experimental: Ignore everything except ALLOWED_POS.
+    # print 'Warning: Ignoring everything except verb'
+    cached_pos = nltk_pos_cache.get(token, None)
+    if not cached_pos:
+      cached_pos = nltk.pos_tag([token])[0][1]
+    if not cached_pos in _ALLOWED_POS:
+      continue
+    # Experiment ends.
+    original_token = token
     cached_token = token_cache.get(token, None)
     if cached_token:
       if cached_token == '_IGNORE_':
