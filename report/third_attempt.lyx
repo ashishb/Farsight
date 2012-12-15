@@ -76,7 +76,7 @@
 \begin_layout Standard
 To further refine our results, we focused on data processing and feature
  selection with the goal of reducing redundant features in the data.
- Just like in second attempt, we only made use of logistic regression with
+ Just like our second attempt, we only made use of logistic regression with
  
 \begin_inset Formula $14000$
 \end_inset
@@ -94,8 +94,8 @@ Using tri-grams (and beyond)
 \end_layout
 
 \begin_layout Standard
-We tried using tri-grams, quad-grams and even penta-grams.
- The assumption here was that the it will catch phrases like 
+We tried using tri-grams, quad-grams, and even penta-grams.
+ The assumption here was that it will catch phrases like 
 \begin_inset Quotes eld
 \end_inset
 
@@ -103,7 +103,7 @@ not so good
 \begin_inset Quotes erd
 \end_inset
 
-, 
+ and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -112,7 +112,7 @@ was hardly any better
 \end_inset
 
  but it turns out that these phrases have really sparse density.
- Therefore, we did not get any significant gains out of it.
+ Therefore we did not get any significant gains out of it.
  In some trials, the accuracy even took a dip.
 \end_layout
 
@@ -121,11 +121,12 @@ Respecting natural phrase boundaries for bi-grams
 \end_layout
 
 \begin_layout Standard
-Earlier, we were forming bigrams across boundaries like full stop, question
- marks and semi-colons, this produced features where the first word was
- a part of previous phrase and second part of another.
+Earlier we were forming bigrams across boundaries like full stop, question
+ marks, and semi-colons.
+ This produced features where the first word was a part of previous phrase
+ and second part of another.
  During the analysis of mis-classified results, we realized that this was
- creating a lot of noise and hence, we added checks to ensure that we do
+ creating a lot of noise and hence we added checks to ensure that we do
  create bi-grams across phrase boundaries.
 \end_layout
 
@@ -150,7 +151,7 @@ pasta
 \begin_inset Quotes erd
 \end_inset
 
- as well as determiners like 
+, and determiners like 
 \begin_inset Quotes eld
 \end_inset
 
@@ -158,9 +159,9 @@ which
 \begin_inset Quotes erd
 \end_inset
 
- were too frequent and therefore, ended up in features.
+ were too frequent and hence ended up in features.
  To clean this up, we decided to consider only following parts of speech.
- This cleanup, though, made the feature extraction phase really slow, gave
+ This cleanup, though made the feature extraction phase really slow, gave
  us signficant boost in accuracy.
  We used NLTK
 \begin_inset CommandInset citation
@@ -2050,8 +2051,9 @@ Discussion
 \begin_layout Standard
 Clearly, using k-grams for k>2 is too noisy.
  Ignoring bi-grams across phrase boundaries (like full stop) improved the
- results and using Natural language tool kit to tag parts of speech and
- then removing extraneous parts of speech gave a huge boost to accuracy
+ results.
+ Furthermore, using Natural language tool kit to tag parts of speech and
+ then removing extraneous parts of speech gave another huge boost to accuracy
  of our pipeline.
 \end_layout
 
