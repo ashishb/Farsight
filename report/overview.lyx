@@ -95,5 +95,18 @@ Based on our analysis, we removed several redundant and noisy features to
  further improve the accuracy of our pipeline.
 \end_layout
 
+\begin_layout Standard
+Project code (excluding Yelp data whose distribution is prohibited) is available
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/ashishb/farsight"
+target "https://github.com/ashishb/farsight"
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
